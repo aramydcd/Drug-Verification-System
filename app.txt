@@ -1,0 +1,64 @@
+drug_verification_system/
+│
+├── manage.py
+├── requirements.txt
+│
+├── drug_verification/             # Main project folder
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── asgi.py
+│   └── wsgi.py
+│
+├── apps/
+│   ├── users/                     # Handles authentication & roles
+│   │   ├── migrations/
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   ├── urls.py
+│   │   ├── forms.py
+│   │   └── templates/users/
+│   │       ├── login.html
+│   │       ├── register.html
+│   │       └── profile.html
+│   │
+│   ├── drugs/                     # Manages drug registration & verification
+│   │   ├── migrations/
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   ├── urls.py
+│   │   ├── forms.py
+│   │   └── templates/drugs/
+│   │       ├── verify.html
+│   │       ├── add_drug.html
+│   │       └── manage_drugs.html
+│   │
+│   └── reports/                   # Handles counterfeit reports & analytics
+│       ├── migrations/
+│       ├── __init__.py
+│       ├── admin.py
+│       ├── apps.py
+│       ├── models.py
+│       ├── views.py
+│       ├── urls.py
+│       └── templates/reports/
+│           ├── report_form.html
+│           └── report_list.html
+│
+├── static/                        # CSS, JS, Images
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+└── templates/                     # Shared templates
+    ├── base.html                   # Bootstrap layout
+    └── home.html
+
+
+

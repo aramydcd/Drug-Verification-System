@@ -1,0 +1,17 @@
+# Core Django
+Django>=5.0,<6.0
+djangorestframework>=3.15.0
+
+# Forms & Bootstrap integration
+django-crispy-forms>=2.3
+crispy-bootstrap5>=2024.2
+
+# QR / Barcode support
+qrcode>=7.4.2
+Pillow>=10.0.0   # required by qrcode for image handling
+
+# Filtering / searching
+django-filter>=24.2
+
+# Dev tools (optional but recommended)
+python-decouple>=3.8     # for .env configuration
