@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>👋 Welcome, {{ user.username }}!</h2>
+    <p>This is your dashboard. From here, you can:</p>
+    <ul>
+        <li>🔍 Verify drugs</li>
+        <li>📋 Manage your account</li>
+        <li>➕ Add or edit drugs (if admin)</li>
+    </ul>
+</div>
+{% endblock %}

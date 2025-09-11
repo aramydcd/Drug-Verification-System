@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-success text-white">
+            <h4>➕ Add New Drug</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data" class="row g-3">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <div class="col-md-6">
+                    <label class="form-label">Drug Name</label>
+                    {{ form.name|as_widget:attrs }}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Manufacturer</label>
+                    {{ form.manufacturer }}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Batch Number</label>
+                    {{ form.batch_number }}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Expiry Date</label>
+                    {{ form.expiry_date }}
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Description</label>
+                    {{ form.description }}
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Drug Image</label>
+                    {{ form.image }}
+                </div>
+
+                <div class="col-12 d-flex justify-content-between mt-3">
+                    <a href="{% url 'list_drugs' %}" class="btn btn-secondary">⬅ Back</a>
+                    <button type="submit" class="btn btn-success">Save Drug</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
