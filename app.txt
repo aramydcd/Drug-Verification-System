@@ -62,18 +62,11 @@ drug_verification_system/
 
 
 
+"132e5565712    ----------- Pepsodent"
+132e5565713    ------------ Amatem
 
 
-
-
-
-
-
-
-
-
-
-
-
+next thing: Verification log/history.
+verufucation 
 
 

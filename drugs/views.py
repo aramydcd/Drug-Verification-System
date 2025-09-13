@@ -1,48 +1,81 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import user_passes_test
+from django.core.exceptions import PermissionDenied
 from .models import Drug
 from .forms import DrugForm
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
-def is_admin(user):
-    return user.is_authenticated and user.role == 'Admin'
-
-@user_passes_test(is_admin)
+@login_required
 def add_drug(request):
-    
-    if request.method == 'POST':
-        form = DrugForm(request.POST, request.FILES)
+    # Only allow Admin or Company to add drugs
+    if request.user.role not in ["Admin", "company"]:
+        raise PermissionDenied("You are not allowed to add drugs.")
+
+    if request.method == "POST":
+        form = DrugForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             drug = form.save(commit=False)
-            drug.company = request.user   # 🔑 Assign current company
+
+            # Assign company if user is a company
+            if request.user.role == "company":
+                drug.company = request.user
+
+            # If Admin is adding, let them choose company from form
+            # (or optionally, Admin can skip assigning)
             drug.save()
-            return redirect('view_drugs')
+            return redirect("view_drugs")
+        else:
+            print(form.errors)  # For debugging in terminal
     else:
-        form = DrugForm()
-    return render(request, 'drugs/add_drug.html', {'form': form})
+        form = DrugForm(user=request.user)
+
+    return render(request, "drugs/add_drug.html", {"form": form})
 
 
-@user_passes_test(is_admin)
+
+
+@login_required
 def view_drugs(request):
-    drugs = Drug.objects.all()
-    return render(request, 'drugs/view_drugs.html', {'drugs': drugs})
+    query = request.GET.get("q", "")
 
-@user_passes_test(is_admin)
-def edit_drug(request, drug_id):
-    drug = get_object_or_404(Drug, id=drug_id, company=request.user)  # 🔒 ensure ownership    
-    if request.method == 'POST':
-        form = DrugForm(request.POST, request.FILES, instance=drug)
+    # 🔎 Base queryset depending on user role
+    if request.user.role == "Admin":
+        drugs = Drug.objects.all()
+    elif request.user.role == "company":
+        drugs = Drug.objects.filter(company=request.user)
+    else:
+        drugs = Drug.objects.none()  # normal users shouldn't see drugs
+
+    # 🔎 Search filter
+    if query:
+        drugs = drugs.filter(
+            Q(name__icontains=query) | Q(batch_number__icontains=query)
+        )
+
+    return render(request, "drugs/view_drugs.html", {"drugs": drugs})
+
+
+
+@login_required
+def edit_drug(request, id):
+    drug = get_object_or_404(Drug, id=id)
+
+    if request.method == "POST":
+        form = DrugForm(request.POST, request.FILES, instance=drug, user=request.user)
         if form.is_valid():
             form.save()
-            return redirect('view_drugs')
+            return redirect("view_drugs")
     else:
-        form = DrugForm(instance=drug)
-    return render(request, 'drugs/edit_drug.html', {'form': form})
+        form = DrugForm(instance=drug, user=request.user)
 
-@user_passes_test(is_admin)
-def delete_drug(request, drug_id):
-    drug = get_object_or_404(Drug, id=drug_id, company=request.user)  # 🔒 ensure ownership
-    if request.method == "POST":
-        drug.delete()
-        return redirect("view_drugs")
-    return render(request, "drugs/delete_drug.html", {"drug": drug})
+    return render(request, "drugs/edit_drug.html", {"form": form, "drug": drug})
+
+
+
+@login_required
+def delete_drug(request, id):
+    drug = get_object_or_404(Drug, id=id)
+    drug.delete()
+    return redirect("view_drugs")

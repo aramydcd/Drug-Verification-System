@@ -1,91 +1,64 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import  logout
 from django.contrib.auth.views import LoginView
 from .forms import SignUpForm, CustomLoginForm
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from drugs.models import Drug
-from verification.models import VerificationLog
-from django.contrib.auth import get_user_model
+from verification.models import Verification
+from accounts.models import User
+from django.urls import reverse_lazy
 
 
-
-
-User = get_user_model()
 
 
 @method_decorator(login_required, name='dispatch')
-class AdminDashboardView(TemplateView):
-    template_name = "accounts/admin_dashboard.html"
+class DashboardView(TemplateView):
+    template_name = "accounts/dashboard.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = self.request.user
 
-        # Statistics
-        context["total_users"] = User.objects.count()
-        context["total_companies"] = User.objects.filter(role="company").count()
-        context["total_drugs"] = Drug.objects.count()
-        context["total_verifications"] = VerificationLog.objects.count()
+        # ----------------------------
+        # Admin Dashboard
+        # ----------------------------
+        if user.role == "Admin":
+            context["admin_total_users"] = User.objects.count()
+            context["admin_total_companies"] = User.objects.filter(role="company").count()
+            context["admin_total_drugs"] = Drug.objects.count()
+            context["admin_total_verifications"] = Verification.objects.count()
 
-        # Recent logs
-        context["recent_logs"] = VerificationLog.objects.select_related("user", "drug").order_by("-timestamp")[:5]
+            context["admin_recent_logs"] = (
+                Verification.objects.select_related("user", "drug")
+                .order_by("-created_at")[:5]
+            )
+
+        # ----------------------------
+        # Company Dashboard
+        # ----------------------------
+        elif user.role == "Company":
+            company_drugs = Drug.objects.filter(company=user)  # user must be a single instance
+            context["company_total_drugs"] = company_drugs.count()
+            context["company_total_verifications"] = Verification.objects.filter(drug__in=company_drugs).count()
+
+            context["company_recent_logs"] = (
+                Verification.objects.select_related("user", "drug")
+                .filter(drug__in=company_drugs)
+                .order_by("-created_at")[:5]
+            )
+
+        # ----------------------------
+        # User Dashboard
+        # ----------------------------
+        elif user.role == "User":
+            user_verifications = Verification.objects.filter(user=user)
+            context["user_total_verifications"] = user_verifications.count()
+            context["user_recent_logs"] = user_verifications.select_related("drug").order_by("-created_at")[:5]
 
         return context
 
-
-@method_decorator(login_required, name='dispatch')
-class CompanyDashboardView(TemplateView):
-    template_name = "accounts/company_dashboard.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # Get company drugs
-        company_drugs = Drug.objects.filter(company=self.request.user)
-
-        # Stats
-        context["total_drugs"] = company_drugs.count()
-        context["total_verifications"] = VerificationLog.objects.filter(drug__in=company_drugs).count()
-
-        # Recent verification logs for this company's drugs
-        context["recent_logs"] = (
-            VerificationLog.objects.select_related("user", "drug")
-            .filter(drug__in=company_drugs)
-            .order_by("-timestamp")[:5]
-        )
-
-        return context
-
-
-
-
-# Create your views here.
-def redirect_based_on_role(user):
-    """Redirect user to dashboard based on their role."""
-    if user.role == "company":
-        return redirect("company_dashboard")
-    elif user.role == "admin":
-        return redirect("admin_dashboard")  # Django admin site
-    else:
-        return redirect("home")
-
-
-@login_required
-def user_dashboard(request):
-    return render(request, "accounts/user_dashboard.html")
-
-@login_required
-def company_dashboard(request):
-    return render(request, "accounts/company_dashboard.html")
-
-@login_required
-def admin_dashboard(request):
-    return render(request, "accounts/admin_dashboard.html")
-
-@login_required
-def dashboard(request):
-    return render(request, "accounts/dashboard.html")
 
 
 class CustomLoginView(LoginView):
@@ -93,8 +66,10 @@ class CustomLoginView(LoginView):
     authentication_form = CustomLoginForm
 
     def get_success_url(self):
-        return redirect_based_on_role(self.request.user).url
-
+        # Redirect all users to the same dashboard
+        return reverse_lazy("dashboard")
+    
+    
 
 def signup_view(request):
     if request.method == 'POST':
@@ -107,7 +82,7 @@ def signup_view(request):
                 user.role = 'user'
 
             user.save()
-            return redirect_based_on_role(user)
+            return redirect('dashboard')
 
     else:
         form = SignUpForm()
@@ -117,3 +92,12 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def about_view(request):
+    return render(request, 'accounts/about.html')
+
+def history_view(request):
+    return render(request, 'accounts/history.html')
+
+def home_view(request):
+    return render(request, 'home.html')

@@ -1,106 +1,78 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4">💊 Drug Verification System</h1>
-    <p class="text-center text-muted mb-5">
+<div class="container mt-5 text-center">
+    <h1 class="mb-4">💊 DrugVerify</h1>
+    <p class="text-muted mb-5">
         Securely verify, manage, and track pharmaceutical drugs.
     </p>
 
-    <!-- Quick Action Cards -->
-    <div class="row g-4">
-
-        <!-- Verify Drug -->
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 h-100 text-center">
-                <div class="card-body">
-                    <h5 class="card-title">🔍 Verify a Drug</h5>
-                    <p class="card-text text-muted">Check drug authenticity using batch code.</p>
-                    <a href="{% url 'search_by_batch' %}" class="btn btn-primary w-100">Verify</a>
-                </div>
-            </div>
+    <!-- Mission & Vision -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <h3>Our Mission</h3>
+            <p>To ensure public safety by providing accurate drug verification and management.</p>
         </div>
-
-        <!-- Add New Drug -->
-        {% if user.is_staff %}
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 h-100 text-center">
-                <div class="card-body">
-                    <h5 class="card-title">➕ Add New Drug</h5>
-                    <p class="card-text text-muted">Register a new drug in the system.</p>
-                    <a href="{% url 'add_drug' %}" class="btn btn-success w-100">Add Drug</a>
-                </div>
-            </div>
+        <div class="col-md-6">
+            <h3>Our Vision</h3>
+            <p>To be the leading platform for trustworthy pharmaceutical verification.</p>
         </div>
-        {% endif %}
-
-        <!-- View Drugs -->
-        {% if user.is_staff %}
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 h-100 text-center">
-                <div class="card-body">
-                    <h5 class="card-title">📋 Manage Drugs</h5>
-                    <p class="card-text text-muted">View, edit, or delete registered drugs.</p>
-                    <a href="{% url 'list_drugs' %}" class="btn btn-info w-100">View Drugs</a>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
     </div>
 
-    <!-- Auth Section -->
+    <!-- Features -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">🔍 Verify a Drug</h5>
+                    <p class="card-text">Check drug authenticity using batch code or QR code.</p>
+                    <a href="{% url 'search_by_batch' %}" class="btn btn-primary w-100">Try Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">📋 Manage Drugs</h5>
+                    <p class="card-text">Admins can add, edit, or delete registered drugs.</p>
+                    {% if user.is_authenticated and user.role == 'Admin' or user.role == 'company' %}
+                        <a href="{% url 'view_drugs' %}" class="btn btn-success w-100">Manage</a>
+                    {% elif user.is_authenticated and user.role == 'User' %}
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary w-100">You don't have access to this feature</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-secondary w-100">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Track History</h5>
+                    <p class="card-text">View verification logs and export reports (Admin & Company only).</p>
+                    {% if user.is_authenticated %}
+                        {% if user.role != 'User' %}
+                            <a href="{% url 'history' %}" class="btn btn-info w-100">View Logs</a>
+                        {% else %}
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary w-100">You don't have access to this feature</a>
+                        {% endif %}
+
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-secondary w-100">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Prompt for Guests -->
+    {% if not user.is_authenticated %}
     <div class="row mt-5">
-        {% if not user.is_authenticated %}
         <div class="col-md-6 offset-md-3">
             <div class="card shadow-sm border-0 text-center p-4">
                 <h5>🔑 Get Started</h5>
                 <p class="text-muted">Login or create an account to access more features.</p>
                 <a href="{% url 'login' %}" class="btn btn-primary w-100 mb-2">Login</a>
                 <a href="{% url 'signup' %}" class="btn btn-outline-secondary w-100">Sign Up</a>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- Recent Verifications -->
-    {% if recent_verifications %}
-    <div class="mt-5">
-        <h3 class="mb-3">📊 Recent Verifications</h3>
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Drug Name</th>
-                            <th>Batch Code</th>
-                            <th>Status</th>
-                            <th>Verified By</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for v in recent_verifications %}
-                        <tr>
-                            <td>{{ v.drug.name }}</td>
-                            <td>{{ v.drug.batch_code }}</td>
-                            <td>
-                                {% if v.is_valid %}
-                                    <span class="badge bg-success">Authentic</span>
-                                {% else %}
-                                    <span class="badge bg-danger">Fake</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ v.user.username }}</td>
-                            <td>{{ v.created_at|date:"M d, Y H:i" }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5" class="text-center text-muted">No recent verifications.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>

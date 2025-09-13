@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from verification import views as verification_views
+from verification import views
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 
 
 urlpatterns = [
@@ -24,5 +28,9 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('', include('verification.urls')),  
     path('drugs/', include('drugs.urls')),
+    path("", views.home_view, name="home"),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

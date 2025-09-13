@@ -1,0 +1,70 @@
+/* styles.css */
+
+/* Navbar background */
+.navbar {
+    background-color: #007bff; /* Blue */
+}
+
+/* Navbar brand */
+.navbar-brand {
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+.navbar-brand:hover {
+    color: #ffd700; /* Gold */
+}
+
+/* Navbar links */
+.navbar-nav .nav-link {
+    color: #fff;
+    transition: color 0.3s, background-color 0.3s;
+}
+.navbar-nav .nav-link:hover {
+    color: #ffd700;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    background-color: #0056b3; /* Darker blue */
+    border-radius: 0.5rem;
+    border: none;
+    padding: 0.5rem 0;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    color: #fff;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+.dropdown-item:hover {
+    background-color: #ffd700; /* Gold */
+    color: #000;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Dropdown toggle arrow color */
+.dropdown-toggle::after {
+    color: #fff;
+}
+
+/* Mobile menu collapse background */
+.navbar-collapse {
+    background-color: #007bff;
+}
+
+.btn-blue {
+    background-color: #0d6efd; /* Bootstrap primary blue */
+    border-color: #0d6efd;
+    color: white;
+}
+
+.btn-blue:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}

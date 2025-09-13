@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-5">
-    <div class="card shadow-lg">
-        <div class="card-header bg-success text-white">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white">
             <h4>➕ Add New Drug</h4>
         </div>
         <div class="card-body">
@@ -11,37 +12,27 @@
                 {% csrf_token %}
                 {{ form.non_field_errors }}
 
-                <div class="col-md-6">
-                    <label class="form-label">Drug Name</label>
-                    {{ form.name|as_widget:attrs }}
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Manufacturer</label>
-                    {{ form.manufacturer }}
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Batch Number</label>
-                    {{ form.batch_number }}
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Expiry Date</label>
-                    {{ form.expiry_date }}
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Description</label>
-                    {{ form.description }}
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Drug Image</label>
-                    {{ form.image }}
-                </div>
+                {% for field in form %}
+                    <div class="col-md-6">
+                        <label class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        <div class="text-danger">
+                            {{ field.errors }}
+                        </div>
+                    </div>
+                {% endfor %}
 
-                <div class="col-12 d-flex justify-content-between mt-3">
-                    <a href="{% url 'list_drugs' %}" class="btn btn-secondary">⬅ Back</a>
-                    <button type="submit" class="btn btn-success">Save Drug</button>
+                <div class="col-12 mt-4 text-end">
+                    <a href="{% url 'view_drugs' %}" class="btn btn-secondary">⬅ Back</a>
+                    <button type="submit" class="btn btn-primary">💾 Save Drug</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 {% endblock %}
+
+

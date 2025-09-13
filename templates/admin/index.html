@@ -1,0 +1,26 @@
+{% extends "admin/index.html" %}
+
+{% block content %}
+<h1>Welcome to Drug Verification Admin</h1>
+
+<div style="display:flex; gap:1rem; margin-bottom:2rem;">
+    <div style="background:#007bff; color:white; padding:1rem; border-radius:0.5rem; flex:1; text-align:center;" class="dashboard-card">
+        <h2>{{ total_users }}</h2>
+        <p>Users</p>
+    </div>
+    <div style="background:#28a745; color:white; padding:1rem; border-radius:0.5rem; flex:1; text-align:center;" class="dashboard-card">
+        <h2>{{ total_companies }}</h2>
+        <p>Companies</p>
+    </div>
+    <div style="background:#ffc107; color:white; padding:1rem; border-radius:0.5rem; flex:1; text-align:center;" class="dashboard-card">
+        <h2>{{ total_drugs }}</h2>
+        <p>Drugs</p>
+    </div>
+    <div style="background:#dc3545; color:white; padding:1rem; border-radius:0.5rem; flex:1; text-align:center;" class="dashboard-card">
+        <h2>{{ total_verifications }}</h2>
+        <p>Verifications</p>
+    </div>
+</div>
+
+{{ block.super }}
+{% endblock %}

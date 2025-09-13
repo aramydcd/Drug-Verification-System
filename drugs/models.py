@@ -7,10 +7,12 @@ class Drug(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     batch_number = models.CharField(max_length=100, unique=True)
-    manufacturer = models.CharField(max_length=255)
+    manufacturer_date = models.CharField(max_length=255)
     expiry_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to="drugs/", blank=True, null=True)
+    qr_code = models.CharField(max_length=255, unique=True)
+
 
     # 🔑 NEW: Link to company (User with role="company")
     company = models.ForeignKey(

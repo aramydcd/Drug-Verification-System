@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Drug Verification System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
 
@@ -16,34 +18,42 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        
+      <!-- Left Side Auth Links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">        
         <!-- Visible to all -->
         <li class="nav-item">
           <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li>
-        
-        <!-- Drug Management (Admin Only) -->
-        {% if user.is_authenticated and user.is_staff %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="drugMenu" role="button" data-bs-toggle="dropdown">Drug Management</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'add_drug' %}">➕ Add New Drug</a></li>
-            <li><a class="dropdown-item" href="{% url 'list_drugs' %}">📋 View / Edit Drugs</a></li>
-          </ul>
-        </li>
-        {% endif %}
 
-        <!-- Verification -->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'about' %}">About Us</a>
+        </li>
+        
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="verifyMenu" role="button" data-bs-toggle="dropdown">Drug Verification</a>
+          <a class="nav-link dropdown-toggle" href="#" id="drugMenu" role="button" data-bs-toggle="dropdown">Features</a>
           <ul class="dropdown-menu">
-            <!-- <li><a class="dropdown-item" href="{% url 'search_by_batch' %}">🔍 Search by Batch</a></li> -->
+
+            {% if user.is_authenticated %}
+                <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
+            {% endif %}
+            
+            <!-- General Menu -->
+            <li><a class="dropdown-item" href="{% url 'search_by_batch' %}">🔍 Search by Batch</a></li>
+            <li><a class="dropdown-item" href="{% url 'search_by_qr_code' %}">🔍 Search by Barcode</a></li>
+            <li><a class="dropdown-item" href="{% url 'search_by_batch' %}">🔍 Verify Drug</a></li>
+
+            
+            {% if user.is_authenticated and user.role == 'Admin' or user.role == 'company' %}
+              <li><a class="dropdown-item" href="{% url 'add_drug' %}">➕ Add New Drug</a></li>
+              <li><a class="dropdown-item" href="{% url 'view_drugs' %}">📋 Manage Drugs</a></li>
+              <li><a class="dropdown-item" href="{% url 'history' %}">📊 Verification Logs</a></li>
+            {% endif %}
+
           </ul>
         </li>
       </ul>
 
-      <!-- Auth Links -->
+      <!-- Rignt Side Auth Links -->
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
           <li class="nav-item">
