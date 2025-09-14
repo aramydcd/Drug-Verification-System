@@ -1,9 +1,69 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="container mt-5 text-center">
-    <h1>About Us</h1>
-    <p>Welcome to the Web-based Drug Verification System.</p>
-    <p>Our mission: Ensure public safety by providing accurate drug verification.</p>
-    <p>Our vision: To be the leading platform for trustworthy pharmaceutical verification.</p>
+<div class="container my-5">
+
+    <!-- Hero Section -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-primary">About Us</h1>
+        <p class="lead text-muted mt-3">
+            Welcome to <span class="fw-semibold">💊 DrugVerify</span>, a Web-based Drug Verification System
+            where technology meets healthcare to protect lives.
+        </p>
+    </div>
+
+    <!-- Mission, Vision, Values -->
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 h-100">
+                <div class="card-body text-center">
+                    <h4 class="card-title text-success fw-bold">🌍 Our Mission</h4>
+                    <p class="card-text mt-3">
+                        To safeguard public health by providing a reliable and accessible 
+                        platform that enables users to instantly verify the authenticity 
+                        of pharmaceutical products using QR code technology.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 h-100">
+                <div class="card-body text-center">
+                    <h4 class="card-title text-primary fw-bold">🚀 Our Vision</h4>
+                    <p class="card-text mt-3">
+                        To become the global leader in drug verification systems, 
+                        creating a world where counterfeit medicines are eliminated 
+                        and every individual has access to safe and authentic drugs.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 h-100">
+                <div class="card-body text-center">
+                    <h4 class="card-title text-warning fw-bold">💡 Our Values</h4>
+                    <p class="card-text mt-3">
+                        Integrity, Innovation, and Impact. We believe in building 
+                        trust through transparency, leveraging modern technology, 
+                        and making a positive difference in healthcare delivery.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Extra Info Section -->
+    <div class="mt-5 p-4 bg-light rounded shadow-sm">
+        <h3 class="fw-bold text-center text-dark">Why Choose Us?</h3>
+        <p class="text-muted text-center mt-3">
+            Counterfeit drugs are a major global health threat. Our system empowers 
+            patients, healthcare professionals, and regulatory bodies with a simple 
+            yet powerful tool to verify the legitimacy of drugs in real-time. 
+            Together, we can reduce risks, save lives, and build a healthier society.
+        </p>
+    </div>
+
 </div>
 {% endblock %}

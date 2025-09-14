@@ -38,8 +38,9 @@
             {% endif %}
             
             <!-- General Menu -->
-            <li><a class="dropdown-item" href="{% url 'search_by_batch' %}">🔍 Search by Batch</a></li>
-            <li><a class="dropdown-item" href="{% url 'search_by_qr_code' %}">🔍 Search by Barcode</a></li>
+            <li><a class="dropdown-item" href="{% url 'search_by_batch' %}">🔍 Search by Batch Number</a></li>
+            <li><a class="dropdown-item" href="{% url 'search_by_qr_code' %}">🔍 Search by Qr Code</a></li>
+            <!-- <li><a class="dropdown-item" href="{% url 'search_by_qr_code' %}">🔍 Search by Scanning Qr Code</a></li> -->
             
             {% if user.is_authenticated and user.role == 'Admin' or user.role == 'company' %}
               <li><a class="dropdown-item" href="{% url 'add_drug' %}">➕ Add New Drug</a></li>

@@ -36,8 +36,6 @@ def add_drug(request):
     return render(request, "drugs/add_drug.html", {"form": form})
 
 
-
-
 @login_required
 def view_drugs(request):
     query = request.GET.get("q", "")
@@ -59,8 +57,6 @@ def view_drugs(request):
     return render(request, "drugs/view_drugs.html", {"drugs": drugs})
 
 
-
-
 @login_required
 def edit_drug(request, id):
     drug = get_object_or_404(Drug, id=id)
@@ -80,8 +76,6 @@ def edit_drug(request, id):
         form = DrugForm(instance=drug, user=request.user)
 
     return render(request, "drugs/edit_drug.html", {"form": form, "drug": drug})
-
-
 
 
 @login_required

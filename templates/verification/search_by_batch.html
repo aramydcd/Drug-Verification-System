@@ -37,12 +37,7 @@
                             <p><strong>Manufacturer:</strong> {{ drug.company.username }}</p>
                             <p><strong>Batch No:</strong> {{ drug.batch_number }}</p>
                             <p><strong>Expiry Date:</strong> {{ drug.expiry_date }}</p>
-                            <p><strong>Manufacture Date:</strong> {{ drug.manufacturer_date }}</p>
-
-                            {% if drug.qr_code %}
-                                <p><strong>QR Code:</strong></p>
-                                <img src="{{ drug.qr_code.url }}" class="img-thumbnail" style="max-height:120px;">
-                            {% endif %}
+                            <p><strong>Manufacturing Date:</strong> {{ drug.manufacturer_date }}</p>
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,7 @@ class Drug(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     batch_number = models.CharField(max_length=100, unique=True)
-    manufacturer_date = models.CharField(max_length=255)
+    manufacturer_date = models.DateField()
     expiry_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to="drugs/images/", blank=True, null=True)
