@@ -17,8 +17,8 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Manufacturer</label>
-                    {{ form.manufacturer }}
+                    <label class="form-label">Manufacturer Date</label>
+                    {{ form.manufacturer_date }}
                 </div>
 
                 <div class="col-md-6">
@@ -52,8 +52,8 @@
                 {% endif %}
 
                 <div class="col-12 mt-4">
-                    <button type="submit" class="btn btn-primary">💾 Save Changes</button>
                     <a href="{% url 'view_drugs' %}" class="btn btn-secondary">↩ Back</a>
+                    <button type="submit" class="btn btn-primary">💾 Save Changes</button>
                 </div>
             </form>
         </div>

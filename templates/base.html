@@ -34,19 +34,20 @@
           <ul class="dropdown-menu">
 
             {% if user.is_authenticated %}
-                <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a class="dropdown-item" href="{% url 'dashboard' %}">📊 Dashboard</a></li>
             {% endif %}
             
             <!-- General Menu -->
             <li><a class="dropdown-item" href="{% url 'search_by_batch' %}">🔍 Search by Batch</a></li>
             <li><a class="dropdown-item" href="{% url 'search_by_qr_code' %}">🔍 Search by Barcode</a></li>
-            <li><a class="dropdown-item" href="{% url 'search_by_batch' %}">🔍 Verify Drug</a></li>
-
             
             {% if user.is_authenticated and user.role == 'Admin' or user.role == 'company' %}
               <li><a class="dropdown-item" href="{% url 'add_drug' %}">➕ Add New Drug</a></li>
               <li><a class="dropdown-item" href="{% url 'view_drugs' %}">📋 Manage Drugs</a></li>
-              <li><a class="dropdown-item" href="{% url 'history' %}">📊 Verification Logs</a></li>
+            {% endif %}
+
+             {% if user.is_authenticated %}
+                <li><a class="dropdown-item" href="{% url 'history' %}">🕒 Verification History</a></li>
             {% endif %}
 
           </ul>

@@ -21,15 +21,15 @@
         <table class="table table-hover align-middle">
             <thead class="bg-primary text-white">
                 <tr>
-                    <th>#</th>
-                    <th>Image</th>
+                    <th></th>
+                    <th></th>
                     <th>Drug Name</th>
                     <th>Manufacturer</th>
                     <th>Batch No</th>
                     <th>QR Code</th>
                     <th>Manufacturer Date</th>
                     <th>Expiry Date</th>
-                    <th>Description</th>
+                    <!-- <th>Description</th> -->
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -47,7 +47,7 @@
                         {% endif %}
                     </td>
                     <td class="fw-semibold">{{ drug.name }}</td>
-                    <td>{{ drug.manufacturer }}</td>
+                    <td>{{ drug.company }}</td>
                     <td>{{ drug.batch_number }}</td>
                     <td>{{ drug.qr_code}}</td>
                     <td>{{ drug.manufacturer_date }}</td>
@@ -58,7 +58,7 @@
                             {{ drug.expiry_date }}
                         {% endif %}
                     </td>
-                    <td>{{ drug.description|truncatewords:10 }}</td>
+                    <!-- <td>{{ drug.description|truncatewords:10 }}</td> -->
         
                     <td class="text-center">
                         {% if request.user == drug.company or request.user.role == 'Admin' %}

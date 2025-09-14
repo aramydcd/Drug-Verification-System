@@ -7,7 +7,6 @@ def home_view(request):
     return render(request, 'home.html', {'recent_verifications': recent_verifications})
 
 
-
 def search_by_batch(request):
     result = None
     drug = None  
@@ -25,12 +24,13 @@ def search_by_batch(request):
                 is_valid = False
                 drug = None
 
-            # ✅ Only save verification if we actually searched
-            Verification.objects.create(
-                drug=drug,
-                user=request.user if request.user.is_authenticated else 'Guest',
-                is_valid=is_valid
-            )
+            # ✅ Only save verification if we actually searched and we are logged in
+            if request.user.is_authenticated:
+                Verification.objects.create(
+                    drug=drug,
+                    user=request.user,
+                    is_valid=is_valid
+                )
 
     return render(
         request,
@@ -56,12 +56,13 @@ def search_by_qr_code(request):
                 is_valid = False
                 drug = None
 
-            # ✅ Only save verification if we actually searched
-            Verification.objects.create(
-                drug=drug,
-                user=request.user if request.user.is_authenticated else 'Guest',
-                is_valid=is_valid
-            )
+            # ✅ Only save verification if we actually searched and we are logged in
+            if request.user.is_authenticated:
+                Verification.objects.create(
+                    drug=drug,
+                    user=request.user,
+                    is_valid=is_valid
+                )
 
     return render(
         request,

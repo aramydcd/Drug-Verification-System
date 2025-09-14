@@ -10,7 +10,7 @@ class Drug(models.Model):
     manufacturer_date = models.CharField(max_length=255)
     expiry_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to="drugs/", blank=True, null=True)
+    image = models.ImageField(upload_to="drugs/images/", blank=True, null=True)
     qr_code = models.CharField(max_length=255, unique=True)
 
 

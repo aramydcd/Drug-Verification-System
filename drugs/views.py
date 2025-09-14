@@ -4,6 +4,8 @@ from django.core.exceptions import PermissionDenied
 from .models import Drug
 from .forms import DrugForm
 from django.contrib.auth.decorators import login_required
+import os
+from django.conf import settings
 
 
 # Create your views here.
@@ -58,19 +60,27 @@ def view_drugs(request):
 
 
 
+
 @login_required
 def edit_drug(request, id):
     drug = get_object_or_404(Drug, id=id)
+    old_image = drug.image.path if drug.image else None  # store old image path
 
     if request.method == "POST":
         form = DrugForm(request.POST, request.FILES, instance=drug, user=request.user)
         if form.is_valid():
+            # If a new image is uploaded, delete the old one
+            if 'image' in request.FILES and old_image and os.path.exists(old_image):
+                os.remove(old_image)
+
+            # Save the form
             form.save()
             return redirect("view_drugs")
     else:
         form = DrugForm(instance=drug, user=request.user)
 
     return render(request, "drugs/edit_drug.html", {"form": form, "drug": drug})
+
 
 
 

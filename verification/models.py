@@ -12,14 +12,14 @@ class Company(models.Model):
         return self.name
 
 
-class VerificationLog(models.Model):
-    drug = models.ForeignKey(Drug, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
-    verification_time = models.DateTimeField(auto_now_add=True)
-    result = models.CharField(max_length=50)  # valid, expired, counterfeit
+# class VerificationLog(models.Model):
+#     drug = models.ForeignKey(Drug, on_delete=models.CASCADE)
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+#     verification_time = models.DateTimeField(auto_now_add=True)
+#     result = models.CharField(max_length=50)  # valid, expired, counterfeit
 
-    def __str__(self):
-        return f"{self.drug.name} - {self.result}"
+#     def __str__(self):
+#         return f"{self.drug.name} - {self.result}"
     
 class Verification(models.Model):
     drug = models.ForeignKey(Drug, on_delete=models.CASCADE,null=True, blank=True)
