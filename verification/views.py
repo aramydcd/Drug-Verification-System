@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import Verification
 from drugs.models import Drug
-from pyzbar.pyzbar import decode
 from PIL import Image
-
+import cv2
+import numpy as np
 
 
 def search_by_qr_code(request):
@@ -19,10 +19,17 @@ def search_by_qr_code(request):
 
         if uploaded_file:
             try:
-                image = Image.open(uploaded_file)
-                decoded_objects = decode(image)
-                if decoded_objects:
-                    query = decoded_objects[0].data.decode("utf-8")  # get text from QR
+                # Convert InMemoryUploadedFile to numpy array for cv2
+                pil_image = Image.open(uploaded_file).convert("RGB")
+                open_cv_image = np.array(pil_image)
+                open_cv_image = open_cv_image[:, :, ::-1].copy()  # RGB → BGR
+
+                # Use OpenCV QRCode detector
+                detector = cv2.QRCodeDetector()
+                data, vertices, _ = detector.detectAndDecode(open_cv_image)
+
+                if data:
+                    query = data  # QR code text
             except Exception as e:
                 result = f"❌ Error decoding QR: {e}"
 
