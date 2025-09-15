@@ -77,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'drug_verification_system.wsgi.application'
+WSGI_APPLICATION = 'drugverify.wsgi.application'
 
 
 # Database
