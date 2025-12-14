@@ -8,6 +8,8 @@ authentication, CRUD operations, and database integration.
 - User authentication
 - Role based access control
 - Create, Read, Update, Delete (CRUD) Drug Information
+- Drug Verification by batch number or serial number
+- Drug verification by scanning barcode
 - Database-backed models
 - Admin dashboard
 
